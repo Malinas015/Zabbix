@@ -1,0 +1,66 @@
+
+
+
+Install and configure Zabbix server for Debian 10 Buster
+--------------------------------------------------------------------------
+- Debian has fixed IP
+- Apache2 installed
+- Openssh-server installed
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+a. Install Zabbix repository documentation
+--------------------------------------------------------------------------
+# wget https://repo.zabbix.com/zabbix/4.4/debian/pool/main/z/zabbix-release/zabbix-release_4.4-1+buster_all.deb
+
+# dpkg -i zabbix-release_4.4-1+buster_all.deb
+
+# apt update
+
+--------------------------------------------------------------------------
+b. Install Zabbix server, front-end, agent
+--------------------------------------------------------------------------
+# apt -y install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
+
+--------------------------------------------------------------------------
+c. Create initial database
+--------------------------------------------------------------------------
+# mysql -uroot -p
+UrPassword
+
+mysql> create database zabbix character set utf8 collate utf8_bin;
+mysql> grant all privileges on zabbix.* to zabbix@localhost identified by 'UrPassword';
+mysql> quit;
+
+Import initial schema and data. You will be prompted to enter your newly created password.
+
+# zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uzabbix -p zabbix
+
+---------------------------------------------------------------------------
+d. Configure the database for Zabbix server
+---------------------------------------------------------------------------
+Edit file as sudo: nano /etc/zabbix/zabbix_server.conf
+DBPassword=UrPassword
+
+---------------------------------------------------------------------------
+e. Configure PHP for Zabbix frontend
+---------------------------------------------------------------------------
+Edit file as sudo: nano /etc/zabbix/apache.conf
+(uncomment and set the right timezone for you.)
+
+# php_value date.timezone Europe/Brussels
+
+---------------------------------------------------------------------------
+f. Start Zabbix server and agent processes
+---------------------------------------------------------------------------
+Start Zabbix server and agent processes and make it start at system boot.
+
+# systemctl restart zabbix-server zabbix-agent apache2
+# systemctl enable zabbix-server zabbix-agent apache2
+
+---------------------------------------------------------------------------
+g. Configure Zabbix frontend
+---------------------------------------------------------------------------
+Connect to your newly installed Zabbix frontend: 
+
+http://server_ip_or_name/zabbix or http://localhost/zabbix
+Follow steps described in Zabbix documentation: Installing frontend
