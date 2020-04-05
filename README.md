@@ -1,2 +1,2 @@
 # Zabbix
-Zabbix server 4.4.2 on Raspberry Pi 4
+Zabbix server 4.4.1 on Raspberry Pi 4
