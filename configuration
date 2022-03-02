@@ -1,5 +1,5 @@
 
-# comment
+# by Sikalabs
 
 Install and configure Zabbix server for Debian 10 Buster
 --------------------------------------------------------------------------
@@ -17,7 +17,7 @@ a. Install Zabbix repository documentation
 # apt update
 
 --------------------------------------------------------------------------
-b. Install Zabbix server, front-end, agent
+b. Install Zabbix server, front-end, agent.
 --------------------------------------------------------------------------
 # apt -y install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent
 
